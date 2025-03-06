@@ -36,15 +36,16 @@ def init():
   openai.api_key = vars['openAIAPI']
   vars['spreadsheet_id'] = '1k7VOAgZY9FVdcyVFaQmY_iW_DXvYQluosM2LYL2Wmc8'
   vars['gSheet_api_key'] = keys["GoogleAPIKey"]
-  # URL for the SheetDB API, for POST requests
-  vars['sheetdb_url'] = 'https://sheetdb.io/api/v1/y0fswwtbyapbd'
+  
+  # Modified Google Sheets initialization
+  try:
+    vars['service'] = build('sheets', 'v4', 
+                          developerKey=vars['gSheet_api_key'],
+                          cache_discovery=False)  # Add cache_discovery=False
+  except Exception as e:
+    print(f"Error initializing Google Sheets: {e}")
+    vars['service'] = None
 
-  vars['DISCOVERY_SERVICE_URL'] = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
-
-  vars['service'] = build('sheets',
-                  'v4',
-                  developerKey=vars['gSheet_api_key'],
-  discoveryServiceUrl=vars['DISCOVERY_SERVICE_URL'])
   vars['max_column'] = "O"
   vars['AppSecretKey'] = keys["AppSecretKey"]
   # firebase or gsheet
